@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 const axios = require('axios');
 
@@ -22,15 +23,17 @@ const WikiInfo = ({ nowPlaying }) => {
 
   return (
     <div>
-      {!!info.songInfo && (
-        <InfoSection title="Song Info" info={info.songInfo} />
-      )}
-      {!!info.artistInfo && (
-        <InfoSection title="Artist Info" info={info.artistInfo} />
-      )}
-      {!!info.albumInfo && (
-        <InfoSection title="Album Info" info={info.albumInfo} />
-      )}
+      <Typography component="div">
+        {!!info.songInfo && (
+          <InfoSection title="Song Info" info={info.songInfo} />
+        )}
+        {!!info.artistInfo && (
+          <InfoSection title="Artist Info" info={info.artistInfo} />
+        )}
+        {!!info.albumInfo && (
+          <InfoSection title="Album Info" info={info.albumInfo} />
+        )}
+      </Typography>
     </div>
   );
 };

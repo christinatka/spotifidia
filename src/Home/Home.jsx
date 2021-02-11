@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import querystring from 'query-string';
 import SpotifyWebApi from 'spotify-web-api-node';
-
 import SongPreview from './SongPreview';
 import WikiInfo from './WikiInfo';
+
+import Button from '@material-ui/core/Button';
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import grey from "@material-ui/core/colors/grey";
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Grid, AppBar, Toolbar, Typography } from '@material-ui/core';
 
 const spotifyApi = new SpotifyWebApi({
   redirectUri: 'http://localhost:3000/callback',
@@ -22,9 +27,31 @@ const authorizationURL = querystring.stringifyUrl({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+    color: theme.palette.success.main,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(1),
+    textAlign: 'center',
+    marginBottom: theme.spacing(1),
+    backgroundColor: grey[500],
+    borderRadius: 25
+  },
+}));
+
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [nowPlaying, setNowPlaying] = useState(null);
+  //const [userInfo, setUserInfo] = useState(null);
   const playingPoll = useRef();
 
   useEffect(() => {
@@ -41,7 +68,6 @@ const Home = () => {
     if (loggedIn) {
       spotifyApi.getMyCurrentPlaybackState()
         .then((response) => {
-          console.log(response);
           if (response.body && response.body.is_playing) {
             setNowPlaying({
               name: response.body.item.name,
@@ -61,34 +87,77 @@ const Home = () => {
     }
   }, [loggedIn]);
 
+  // const getUserInfo = useCallback(() => {
+  //   if (loggedIn) {
+  //     spotifyApi.getMe()
+  //       .then((data) => {
+  //         console.log(data.body);
+  //         setUserInfo({
+  //           name: data.body.display_name,
+  //           image: data.body.images[0].url,
+  //         })
+  //     })
+  //   }
+  // }, [loggedIn]);
+
+  // getUserInfo();
+
   useEffect(() => {
     clearInterval(playingPoll.current);
     playingPoll.current = setInterval(getNowPlaying, 500);
   }, [getNowPlaying]);
 
+  const classes = useStyles();
+
   return (
     <div className='App'>
-      Welcome to Spotifidia!
-      <div>
-      {
-        loggedIn ? (
-          <>Start playing music to learn about what you're listening to!</>
-        ) : (
-          <>
-            Log in to Spotify and play music to learn about what you're listening to!
-            <a href={authorizationURL}>
-              Log In
-            </a>
-          </>
-        )
-      }
+      <div className={classes.root}>
+        <AppBar position="static" style={{ background: '#161717' }}>
+          <Toolbar>
+            <Typography variant="h4" className={classes.title} >
+              Welcome to Spotifidia!
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
+      <div className={classes.root}>
+          {
+            loggedIn ? (
+              <Typography variant="h6" >
+                Lets play some Music..
+              </Typography>
+            ) : (
+              <Typography variant="h6">
+                  Log in to Spotify and play music to learn about what you're listening to!
+                  <Button
+                    variant="contained"
+                    color="default"
+                    className={classes.button}
+                    startIcon={<LockOpenOutlinedIcon />}
+                    href={authorizationURL}
+                  >
+                  Connect with Spotify
+                  </Button>
+              </Typography>
+            )
+          }
       </div>
       {
         nowPlaying && (
-          <>
-            <SongPreview nowPlaying={nowPlaying} />
-            <WikiInfo nowPlaying={nowPlaying} />
-          </>
+          <Grid>
+            <div className={classes.root}>
+            <Grid container direction="row" justify="space-evenly" alignItems="flex-start" >
+                <Paper elevation={10} className={classes.paper}>
+                  <SongPreview nowPlaying={nowPlaying} />
+                </Paper>
+              </Grid>
+              <Grid container direction="row" justify="space-evenly" alignItems="flex-start">
+                <Paper elevation={10} className={classes.paper}>
+                <WikiInfo nowPlaying={nowPlaying} />
+                </Paper>
+              </Grid>
+            </div>
+          </Grid>
         )
       }
     </div>
