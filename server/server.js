@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../react-ui/build')));
 
 app.use('/api', routes);
 
