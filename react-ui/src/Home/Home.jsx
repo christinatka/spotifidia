@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import grey from "@material-ui/core/colors/grey";
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Grid, AppBar, Toolbar, Typography } from '@material-ui/core';
+import { Paper, AppBar, Toolbar, Typography } from '@material-ui/core';
 
 const spotifyApi = new SpotifyWebApi({
   redirectUri: 'https://spotifidia.herokuapp.com/callback',
@@ -29,6 +29,9 @@ const authorizationURL = querystring.stringifyUrl({
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: 'absolute',
+    top: 124,
+    left: 250,
     flexGrow: 1,
   },
   title: {
@@ -46,6 +49,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[500],
     borderRadius: 25
   },
+  sidebar: {
+    position: 'fixed',
+    top: 64,
+    backgroundColor: grey[700],
+    left: 0,
+    bottom: 0,
+    width: 250,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25
+  },
+  subtitle: {
+    top: 64,
+    height: 60,
+    left: 250,
+    position: 'absolute',
+    paddingLeft: 12,
+    paddingTop: 12,
+  }
 }));
 
 const Home = () => {
@@ -111,16 +134,14 @@ const Home = () => {
 
   return (
     <div className='App'>
-      <div className={classes.root}>
-        <AppBar position="static" style={{ background: '#161717' }}>
-          <Toolbar>
-            <Typography variant="h4" className={classes.title} >
-              Welcome to Spotifidia!
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </div>
-      <div className={classes.root}>
+      <AppBar position="fixed" style={{ background: '#161717' }}>
+        <Toolbar>
+          <Typography variant="h4" className={classes.title} >
+            Welcome to Spotifidia!
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.subtitle}>
           {
             loggedIn ? (
               <Typography variant="h6" >
@@ -144,20 +165,16 @@ const Home = () => {
       </div>
       {
         nowPlaying && (
-          <Grid>
-            <div className={classes.root}>
-            <Grid container direction="row" justify="space-evenly" alignItems="flex-start" >
-                <Paper elevation={10} className={classes.paper}>
-                  <SongPreview nowPlaying={nowPlaying} />
-                </Paper>
-              </Grid>
-              <Grid container direction="row" justify="space-evenly" alignItems="flex-start">
-                <Paper elevation={10} className={classes.paper}>
-                <WikiInfo nowPlaying={nowPlaying} />
-                </Paper>
-              </Grid>
+          <>
+            <div className={classes.sidebar}>
+              <SongPreview nowPlaying={nowPlaying} />
             </div>
-          </Grid>
+            <div className={classes.root}>
+              <Paper elevation={10} className={classes.paper}>
+                <WikiInfo nowPlaying={nowPlaying} />
+              </Paper>
+            </div>
+          </>
         )
       }
     </div>
