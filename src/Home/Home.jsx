@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Grid, AppBar, Toolbar, Typography } from '@material-ui/core';
 
 const spotifyApi = new SpotifyWebApi({
-  redirectUri: 'http://localhost:3000/callback',
+  redirectUri: 'https://spotifidia.herokuapp.com/callback',
   clientId: '7d7cfc8ba99847eb8a155cc0b831c7b0',
 });
 
@@ -23,7 +23,7 @@ const authorizationURL = querystring.stringifyUrl({
     response_type: 'token',
     client_id: '7d7cfc8ba99847eb8a155cc0b831c7b0',
     scope: scope,
-    redirect_uri: 'http://localhost:3000/callback',
+    redirect_uri: 'https://spotifidia.herokuapp.com/callback',
   },
 });
 
