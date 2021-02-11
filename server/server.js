@@ -15,4 +15,8 @@ app.use(express.static(path.join(__dirname, '../react-ui/build')));
 
 app.use('/api', routes);
 
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '../react-ui/build', 'index.html'));
+});
+
 module.exports = app;
