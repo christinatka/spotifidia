@@ -8,10 +8,11 @@ import Button from '@material-ui/core/Button';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import grey from "@material-ui/core/colors/grey";
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, AppBar, Toolbar, Typography } from '@material-ui/core';
+import { Paper, AppBar, Toolbar, Avatar, Typography } from '@material-ui/core';
 
 const spotifyApi = new SpotifyWebApi({
-  redirectUri: 'https://spotifidia.herokuapp.com/callback',
+  //redirectUri: 'https://spotifidia.herokuapp.com/callback',
+  redirectUri: 'http://localhost:3000/callback',
   clientId: '7d7cfc8ba99847eb8a155cc0b831c7b0',
 });
 
@@ -23,7 +24,8 @@ const authorizationURL = querystring.stringifyUrl({
     response_type: 'token',
     client_id: '7d7cfc8ba99847eb8a155cc0b831c7b0',
     scope: scope,
-    redirect_uri: 'https://spotifidia.herokuapp.com/callback',
+    //redirect_uri: 'https://spotifidia.herokuapp.com/callback',
+    redirect_uri: 'http://localhost:3000/callback',
   },
 });
 
@@ -37,6 +39,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     color: theme.palette.success.main,
+  },
+  imageSize: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
   },
   button: {
     margin: theme.spacing(1),
@@ -74,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [nowPlaying, setNowPlaying] = useState(null);
-  //const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const playingPoll = useRef();
 
   useEffect(() => {
@@ -110,20 +116,19 @@ const Home = () => {
     }
   }, [loggedIn]);
 
-  // const getUserInfo = useCallback(() => {
-  //   if (loggedIn) {
-  //     spotifyApi.getMe()
-  //       .then((data) => {
-  //         console.log(data.body);
-  //         setUserInfo({
-  //           name: data.body.display_name,
-  //           image: data.body.images[0].url,
-  //         })
-  //     })
-  //   }
-  // }, [loggedIn]);
-
-  // getUserInfo();
+  useEffect(() => {
+    if (loggedIn) {
+      spotifyApi.getMe()
+        .then((data) => {
+           setUserInfo({
+             name: data.body.display_name,
+             image: data.body.images[0].url,
+           })
+      });
+    } else {
+      setUserInfo(null);
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     clearInterval(playingPoll.current);
@@ -144,9 +149,21 @@ const Home = () => {
       <div className={classes.subtitle}>
           {
             loggedIn ? (
-              <Typography variant="h6" >
-                Lets play some Music..
-              </Typography>
+              <>
+              {
+                userInfo && (
+                  <div>
+                    <Avatar alt={userInfo.name} src={userInfo.image} className={classes.imageSize}/>
+                    <Typography>
+                      {userInfo.name}
+                    </Typography>
+                  </div>
+                )
+              }
+                <Typography variant="h6" >
+                  Lets play some Music..
+                </Typography>
+              </>
             ) : (
               <Typography variant="h6">
                   Log in to Spotify and play music to learn about what you're listening to!
