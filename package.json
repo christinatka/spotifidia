@@ -1,0 +1,19 @@
+{
+  "name": "spotifidia",
+  "version": "1.0.0",
+  "description": "A Spotify & Wiki API App",
+  "main": "index.js",
+  "engines": {
+    "node": "12.19.0"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
