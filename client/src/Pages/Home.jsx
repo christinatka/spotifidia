@@ -109,7 +109,7 @@ const Footer = styled.footer`
   }
 `
 
-const FooterLink = styled.a`
+const LinkWrapper = styled.a`
 	color: inherit;
     height:100%;
     text-decoration: none;
@@ -120,6 +120,7 @@ const FooterLink = styled.a`
         text-decoration: none;
 	}
 	&:hover {
+        color: #1F64AC;
         text-decoration: none;
     }
 `
@@ -130,7 +131,7 @@ const base_url = 'https://accounts.spotify.com/authorize?'
 
 const payload = {
     client_id: '7d7cfc8ba99847eb8a155cc0b831c7b0',
-    response_type: 'code',
+    response_type: 'token',
     scope: scope,
     //redirect_uri: 'https://spotifidia.herokuapp.com/callback',
     redirect_uri: 'http://localhost:3000/callback',
@@ -197,13 +198,15 @@ const Home = () => {
                         <HoverAlertWrapper style={{minHeight: '75px'}}>
                             <br></br>
                             <div>
-                                {letsGo ? <HoverAlert>Discover your song <span style={{fontSize: '1.3rem'}}> &nbsp;&nbsp;➡️</span></HoverAlert> : ''}
-                                {gitHub ? <HoverAlert>View source on GitHub <span style={{fontSize: '1.3rem'}}> &nbsp;&nbsp;🚀</span></HoverAlert> : ''}
+                                {letsGo ? <HoverAlert>Discover your song <span style={{fontSize: '1rem'}}> &nbsp;&nbsp;➡️</span></HoverAlert> : ''}
+                                {gitHub ? <HoverAlert>View source on GitHub <span style={{fontSize: '1rem'}}> &nbsp;&nbsp;🚀</span></HoverAlert> : ''}
                             </div>
                         </HoverAlertWrapper>
                     }
                     <br></br>
-                    <a href='https://open.spotify.com/user/1228294402?si=rpRkOJcUTiWz2eTMaUoyWQ'>Follow me on Spotify 🤘🏼</a>
+                    <div>
+                        <LinkWrapper href='https://open.spotify.com/user/1228294402?si=rpRkOJcUTiWz2eTMaUoyWQ'>Follow me on Spotify</LinkWrapper>🤘🏼
+                    </div>
                 </Grid>
             </Grid>
             <Footer>
@@ -214,13 +217,13 @@ const Home = () => {
                     style={{width: '100%', textAlign: 'center'}}
                 >
                     <Grid item lg={4} xs={11} style={{width: '100%'}}>
-                        Created by <FooterLink href='https://www.linkedin.com/in/christinatka'>Christina Tkatchenko 👩🏻‍💻</FooterLink>
+                        Created by <LinkWrapper href='https://www.linkedin.com/in/christinatka'>Christina Tkatchenko 👩🏻‍💻</LinkWrapper>
                     </Grid>
                     <Grid item lg={4} xs={11} style={{width: '100%'}}>
                         © 2021
                     </Grid>
                     <Grid item lg={4} xs={11} style={{width: '100%'}}>
-				        <FooterLink href="https://github.com/christinatka/spotifidia/issues">Report an issue</FooterLink>
+				        <LinkWrapper href='https://github.com/christinatka/spotifidia/issues'>Report an issue</LinkWrapper>
 			        </Grid>
                 </Grid>
             </Footer>

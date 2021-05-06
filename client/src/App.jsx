@@ -3,18 +3,37 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect,
+  // useLocation,
 } from 'react-router-dom';
-import Home from './Pages/Home'
+import Home from './Pages/Home';
+import Callback from './Pages/Callback';
+import Discover from './Pages/Discover';
 
-const App = () => (
+// const PrintLocation = () => {
+//   console.log(useLocation());
+//   return null;
+// }
+
+const App = () => { return (
     <Router>
-      <div className='App'>
+      {/* <PrintLocation /> */}
+      <div className="App">
         <Switch>
-          <Route path='/' exact component={Home}/>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/callback">
+            <Callback />
+          </Route>
+          <Route exact path="/discover">
+            <Discover />
+          </Route>
+          <Redirect to="/" />
         </Switch>
       </div>
     </Router>
-);
+); }
 
 export default App;
